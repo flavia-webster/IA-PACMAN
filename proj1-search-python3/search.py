@@ -113,9 +113,38 @@ def depthFirstSearch(problem):
 
 
 def breadthFirstSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from util import Queue
+    """Busca em largura no problema do Pacman."""
+    # Cria uma fila para armazenar os estados a serem explorados, iniciando com o estado inicial
+    # Cada item na fila é uma tupla (estado, caminho até agora)
+    frontier = Queue()
+    frontier.push((problem.getStartState(), []))
+
+    # Cria um conjunto para armazenar os estados já visitados
+    explored = set()
+
+    # Enquanto ainda há estados na fronteira
+    while not frontier.isEmpty():
+        # Pega o próximo estado da fronteira
+        state, actions = frontier.pop()
+
+        # Se o estado é o objetivo, retorna as ações para chegar até aqui
+        if problem.isGoalState(state):
+            return actions
+
+        # Se o estado não foi explorado ainda
+        if state not in explored:
+            # Marca como explorado
+            explored.add(state)
+
+            # Adiciona os sucessores à fronteira
+            for successor, action, _ in problem.getSuccessors(state):
+                if successor not in explored:
+                    # Adiciona na fronteira com as ações atualizadas
+                    frontier.push((successor, actions + [action]))
+
+    # Retorna uma lista vazia se não encontrar um caminho
+    return []
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
