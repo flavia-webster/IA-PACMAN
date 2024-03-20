@@ -73,9 +73,43 @@ def tinyMazeSearch(problem):
     return  [s, s, w, s, w, w, s, w]
 
 def depthFirstSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    """
+    Search the deepest nodes in the search tree first.
+
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    """
+    from util import Stack  # Importa a classe Stack do arquivo util.py
+
+    stack = Stack()  # Inicializa a pilha para armazenar os estados a serem explorados
+    visited = set()  # Conjunto para armazenar os estados já visitados e evitar ciclos
+
+    # Empilha o estado inicial e o caminho vazio (como ainda não se moveu, o caminho está vazio)
+    stack.push((problem.getStartState(), []))
+
+    while not stack.isEmpty():  # Enquanto houver estados na pilha
+        state, path = stack.pop()  # Desempilha o estado atual e o caminho até ele
+
+        if problem.isGoalState(state):  # Se o estado atual é o estado objetivo
+            return path  # Retorna o caminho até o estado objetivo
+
+        if state not in visited:  # Se o estado atual não foi visitado
+            visited.add(state)  # Marca como visitado
+
+            # Obtém os sucessores do estado atual e os empilha
+            for nextState, action, cost in problem.getSuccessors(state):
+                if nextState not in visited:  # Se o próximo estado não foi visitado
+                    # Empilha o próximo estado e o caminho atualizado
+                    stack.push((nextState, path + [action]))
+
+    return []  # Se não encontrar o estado objetivo, retorna lista vazia
 
 
 def breadthFirstSearch(problem):
